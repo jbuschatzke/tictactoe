@@ -15,7 +15,7 @@ function Gameboard() {
     const getBoard = () => board;
 
     const playMarker = (row, column, player) => {
-        if (board[row][column].getValue == 0) {
+        if (board[row][column].getValue() == 0) {
             board[row][column].addMarker(player);
         } else {
             return;
