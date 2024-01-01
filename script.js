@@ -142,13 +142,16 @@ function Gameboard() {
           cellGroup[i].dataset.row = 2;
         }
       };
+
       let checkGame = game.isGameOver();
       if (checkGame != 0)
       {
         displayWinner();
+        enableResetGame();
       }
       else if (checkGame ==0 && turnCounter == 9) {
         playerTurnDiv.textContent = "Draw!";
+        enableResetGame();
       }
     };
 
@@ -165,6 +168,13 @@ function Gameboard() {
       game.playRound(selectedBoxAsRow, selectedBoxAsColumn);
       turnCounter++;
       updateScreen();
+    };
+
+    function enableResetGame() {
+      const resetGameButton = document.createElement('button');
+      resetGameButton.textContent = "Play Again";
+      resetGameButton.setAttribute("id", "reset-game-button");
+      document.body.appendChild(resetGameButton);
     };
 
     boardDiv.addEventListener("click", clickHandlerBoard);
