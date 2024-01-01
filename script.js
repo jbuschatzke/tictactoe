@@ -32,8 +32,8 @@ function Gameboard() {
   
   
   function GameController(
-    playerOneName = "Player One",
-    playerTwoName = "Player Two"
+    playerOneName = document.getElementById("playerOneName").value,
+    playerTwoName = document.getElementById("playerTwoName").value
   ){
     const gameBoard = Gameboard();
     const board = gameBoard.getBoard();
@@ -113,6 +113,7 @@ function Gameboard() {
     const game = GameController();
     const playerTurnDiv = document.querySelector('.turn');
     const boardDiv = document.querySelector('.board');
+    const playerForm = document.querySelector('.player-form')
 
     const updateScreen = () => {
       boardDiv.textContent = "";
@@ -130,6 +131,7 @@ function Gameboard() {
           boardDiv.appendChild(cellButton);
         });
       });
+
       const cellGroup = document.getElementsByClassName("cell");
       for (let i=0; i < cellGroup.length; i++){
         if (i < 3) {
@@ -141,15 +143,17 @@ function Gameboard() {
         }
       };
       let checkGame = game.isGameOver();
-      if (checkGame != 0){
-        displayWinner();}
+      if (checkGame != 0)
+      {
+        displayWinner();
+      }
     };
 
     function displayWinner(){
       const activePlayer = game.getActivePlayer();
       playerTurnDiv.textContent = `${activePlayer.name} wins!`;
       boardDiv.removeEventListener("click", clickHandlerBoard);
-    }
+    };
 
     function clickHandlerBoard(e) {
       const selectedBoxAsRow = e.target.dataset.row;
@@ -157,9 +161,15 @@ function Gameboard() {
       if (!selectedBoxAsRow) return;
       game.playRound(selectedBoxAsRow, selectedBoxAsColumn);
       updateScreen();
-      console.log(checkGame)
-    }
+    };
+
+    function playerSubmitHandler(e) {
+      playerForm.hidden = true;
+      e.preventDefault();
+    };
+
     boardDiv.addEventListener("click", clickHandlerBoard);
+    playerForm.addEventListener("click", playerSubmitHandler);
 
     updateScreen();
   };
