@@ -113,7 +113,7 @@ function Gameboard() {
     const game = GameController();
     const playerTurnDiv = document.querySelector('.turn');
     const boardDiv = document.querySelector('.board');
-    const playerForm = document.querySelector('.player-form')
+    let turnCounter = 0;
 
     const updateScreen = () => {
       boardDiv.textContent = "";
@@ -147,6 +147,9 @@ function Gameboard() {
       {
         displayWinner();
       }
+      else if (checkGame ==0 && turnCounter == 9) {
+        playerTurnDiv.textContent = "Draw!";
+      }
     };
 
     function displayWinner(){
@@ -160,18 +163,27 @@ function Gameboard() {
       const selectedBoxAsColumn = e.target.dataset.box;
       if (!selectedBoxAsRow) return;
       game.playRound(selectedBoxAsRow, selectedBoxAsColumn);
+      turnCounter++;
       updateScreen();
     };
 
-    function playerSubmitHandler(e) {
-      playerForm.hidden = true;
-      e.preventDefault();
-    };
-
     boardDiv.addEventListener("click", clickHandlerBoard);
-    playerForm.addEventListener("click", playerSubmitHandler);
 
     updateScreen();
   };
 
-  ScreenController();
+  function introScreen(){
+    const playerForm = document.querySelector('.player-form');
+    const formSubmit = document.querySelector('.player-form-submit');
+    function playerSubmitHandler(e) {
+      playerForm.hidden = true;
+      ScreenController();
+      e.preventDefault();
+    };
+
+    formSubmit.addEventListener("click", playerSubmitHandler);
+  };
+
+  introScreen();
+
+  // ScreenController();
