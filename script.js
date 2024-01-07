@@ -228,5 +228,3 @@ function Gameboard() {
   };
 
   introScreen();
-
-  // ScreenController();
