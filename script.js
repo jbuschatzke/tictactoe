@@ -26,7 +26,15 @@ function Gameboard() {
       };
     };
 
-    return { playMarker, getBoard, printBoard }
+    function resetBoard() {
+      for (let i=0; i<rows; i++){
+        for (let j=0; j<columns; j++){
+          board[i].splice([j], 1, " ");
+        };
+      };
+    };
+
+    return { playMarker, getBoard, printBoard, resetBoard }
   };
 
   
@@ -60,7 +68,8 @@ function Gameboard() {
       gameBoard.printBoard();
       console.log(`${getActivePlayer().name}'s turn.`)
     };
-
+    
+    //Compare board tiles to check for a winner
     function isGameOver() {
         // check upper row
         if (board[0][1] == board[0][0] && board[0][1] == board[0][2] && board[0][1] != 0) {
@@ -91,6 +100,14 @@ function Gameboard() {
       
         return 0
       };
+
+    //Track turns to create a case for Draw
+    let turnCounter = 0;
+    function incrementTurn (){
+      turnCounter++;
+    };
+    const getTurnNumber = () => turnCounter;
+    const resetTurnNumber = () => turnCounter = 0;
       
     const playRound = (row, column) => {
       gameBoard.playMarker(row, column, getActivePlayer().marker);
@@ -100,20 +117,27 @@ function Gameboard() {
       } else if (checkGame != 0) {
         console.log("Game over");
       } else {
+        incrementTurn();
         switchPlayerTurn();
         printNewRound();
       };
     };
+    
+    //Reset the board and switch players for a new game
+    function resetGame () {
+      gameBoard.resetBoard();
+      switchPlayerTurn();
+    };
+
     printNewRound();
     
-    return { playRound, getActivePlayer, getBoard: gameBoard.getBoard, isGameOver }
+    return { playRound, getActivePlayer, getBoard: gameBoard.getBoard, isGameOver, resetGame, getTurnNumber, resetTurnNumber}
   };
   
   function ScreenController(){
     const game = GameController();
     const playerTurnDiv = document.querySelector('.turn');
     const boardDiv = document.querySelector('.board');
-    let turnCounter = 0;
 
     const updateScreen = () => {
       boardDiv.textContent = "";
@@ -148,10 +172,14 @@ function Gameboard() {
       {
         displayWinner();
         enableResetGame();
+        game.resetGame();
+        game.resetTurnNumber();
       }
-      else if (checkGame ==0 && turnCounter == 9) {
+      else if (checkGame == 0 && game.getTurnNumber() == 9) {
         playerTurnDiv.textContent = "Draw!";
         enableResetGame();
+        game.resetGame();
+        game.resetTurnNumber();
       }
     };
 
@@ -166,19 +194,28 @@ function Gameboard() {
       const selectedBoxAsColumn = e.target.dataset.box;
       if (!selectedBoxAsRow) return;
       game.playRound(selectedBoxAsRow, selectedBoxAsColumn);
-      turnCounter++;
+      console.log(game.turnCounter)
       updateScreen();
     };
 
+    function newGame(){
+      updateScreen();
+      boardDiv.addEventListener("click", clickHandlerBoard);
+      resetGameButton.hidden = true;
+    }
+
+    //Reset Game
+    const resetGameButton = document.createElement('button');
+    resetGameButton.textContent = "Play Again";
+    resetGameButton.setAttribute("id", "reset-game-button");
+    document.body.appendChild(resetGameButton);
+    resetGameButton.hidden = true;
     function enableResetGame() {
-      const resetGameButton = document.createElement('button');
-      resetGameButton.textContent = "Play Again";
-      resetGameButton.setAttribute("id", "reset-game-button");
-      document.body.appendChild(resetGameButton);
+      resetGameButton.addEventListener("click", newGame);
+      resetGameButton.hidden = false;
     };
 
     boardDiv.addEventListener("click", clickHandlerBoard);
-
     updateScreen();
   };
 
