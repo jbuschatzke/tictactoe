@@ -109,7 +109,9 @@ function Gameboard() {
     const playRound = (row, column) => {
       gameBoard.playMarker(row, column, getActivePlayer().marker);
       const checkGame = isGameOver();
-      if (tryAgain == true || checkGame != 0){
+      if (tryAgain == true) {
+        return;
+      } else if (checkGame != 0){
         return;
       } else {
         incrementTurn();
@@ -121,7 +123,7 @@ function Gameboard() {
     //Reset the board and switch players for a new game
     function resetGame () {
       gameBoard.resetBoard();
-      switchPlayerTurn();
+      if (getTurnNumber() != 9) {switchPlayerTurn();}
     };
 
     printNewRound();
