@@ -64,10 +64,7 @@ function Gameboard() {
     };
     const getActivePlayer = () => activePlayer;
     
-    const printNewRound = () => {
-      gameBoard.printBoard();
-      console.log(`${getActivePlayer().name}'s turn.`)
-    };
+    const printNewRound = () => { gameBoard.printBoard(); };
     
     //Compare board tiles to check for a winner
     function isGameOver() {
@@ -112,10 +109,8 @@ function Gameboard() {
     const playRound = (row, column) => {
       gameBoard.playMarker(row, column, getActivePlayer().marker);
       const checkGame = isGameOver();
-      if (tryAgain == true){
-        console.log("Try again");
-      } else if (checkGame != 0) {
-        console.log("Game over");
+      if (tryAgain == true || checkGame != 0){
+        return;
       } else {
         incrementTurn();
         switchPlayerTurn();
@@ -177,6 +172,7 @@ function Gameboard() {
       }
       else if (checkGame == 0 && game.getTurnNumber() == 9) {
         playerTurnDiv.textContent = "Draw!";
+        boardDiv.removeEventListener("click", clickHandlerBoard);
         enableResetGame();
         game.resetGame();
         game.resetTurnNumber();
