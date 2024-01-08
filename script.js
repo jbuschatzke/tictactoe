@@ -147,7 +147,8 @@ function Gameboard() {
           const cellButton = document.createElement("button");
           cellButton.classList.add("cell");
           cellButton.dataset.row = '';
-          cellButton.dataset.box = index;
+          cellButton.dataset.column = index;
+          cellButton.setAttribute("id", cell);
           cellButton.textContent = cell;
           boardDiv.appendChild(cellButton);
         });
@@ -189,10 +190,9 @@ function Gameboard() {
 
     function clickHandlerBoard(e) {
       const selectedBoxAsRow = e.target.dataset.row;
-      const selectedBoxAsColumn = e.target.dataset.box;
+      const selectedBoxAsColumn = e.target.dataset.column;
       if (!selectedBoxAsRow) return;
       game.playRound(selectedBoxAsRow, selectedBoxAsColumn);
-      console.log(game.turnCounter)
       updateScreen();
     };
 
@@ -221,7 +221,7 @@ function Gameboard() {
     const playerForm = document.querySelector('.player-form');
     const formSubmit = document.querySelector('.player-form-submit');
     function playerSubmitHandler(e) {
-      playerForm.hidden = true;
+      playerForm.style.display = "none";
       ScreenController();
       e.preventDefault();
     };

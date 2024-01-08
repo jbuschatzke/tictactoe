@@ -10,15 +10,60 @@ body{
     flex-direction: column;
 }
 
+form{
+    display: flex;
+    flex-direction: column;
+}
+
+.form-row{
+    margin-top: 10px;
+}
+
+#playerOneName{
+    border-radius: 2px;
+    border: 1px solid #F5ABB9;
+}
+
+#playerTwoName{
+    border-radius: 2px;
+    border: 1px solid #5BCEFA;
+}
+
+.player-form-submit{
+    margin-top: 10px;
+    padding: 5px;
+    width: fit-content;
+    align-self: center;
+}
+
+.turn{
+    margin-top: 20px;
+    font-size: 20px;
+}
+
 .board{
-    width: 120px;
     display: grid;
     grid-template-rows: repeat(3, 1fr);
     grid-template-columns: repeat(3, 1fr);
     gap: 0px;
+    padding: 10px;
 }
 
 .cell{
-    width: 40px;
-    height: 40px;
+    background-color: #FFFFFF;
+    width: 80px;
+    height: 80px;
+    border: 1px solid black;
+}
+
+#X{
+    background-color: #F5ABB9;
+}
+
+#O{
+    background-color: #5BCEFA;
+}
+
+#reset-game-button{
+    padding: 10px;
 }
